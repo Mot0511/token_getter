@@ -19,7 +19,7 @@ class RequestModel(BaseModel):
     password: str
 
 @app.post('/')
-def main(data):
+def main(data: RequestModel):
     session = requests.Session()
 
     ua = UserAgent()
