@@ -34,12 +34,3 @@ def main(data: RequestModel):
     token = next((i for i in session.cookies if i.name == 'X1_SSO'), None)
 
     return token.value if token else 'None'
-
-if __name__ == '__main__':
-    uvicorn.run("main:app",
-            host="0.0.0.0",
-            port=8000,
-            reload=True,
-            ssl_keyfile="./key.pem", 
-            ssl_certfile="./cert.pem"
-            )
