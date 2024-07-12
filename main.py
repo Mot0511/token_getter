@@ -3,6 +3,7 @@ from pydantic import BaseModel
 import requests
 from fake_useragent import UserAgent
 from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
 
 app = FastAPI()
 
@@ -28,8 +29,17 @@ def main(data: RequestModel):
     url = 'https://passport.43edu.ru/auth/login'
     data = {'login': data.login, 'password': data.password, "submit": "submit", "returnTo": "https://one.43edu.ru"}
     
-    session.post(url, data=data, verify='cert.pem')
+    session.post(url, data=data)
 
     token = next((i for i in session.cookies if i.name == 'X1_SSO'), None)
 
     return token.value if token else 'None'
+
+if __name__ == '__main__':
+    uvicorn.run("main:app",
+            host="127.0.0.1",
+            port=8000,
+            reload=True,
+            ssl_keyfile="./key.pem", 
+            ssl_certfile="./cert.pem"
+            )
